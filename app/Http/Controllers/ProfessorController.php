@@ -12,7 +12,7 @@ class ProfessorController extends Controller
      */
     public function index()
     {
-        $professors = User::role('profesor')->with('subjects')->get();
+        $professors = User::all(); // hola
         return view('profesores', compact('professors'));
     }
     public function store(Request $request)
