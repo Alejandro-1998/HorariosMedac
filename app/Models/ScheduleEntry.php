@@ -4,9 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Avaiability extends Model
+class ScheduleEntry extends Model
 {
     protected $guarded = [];
+
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class);
+    }
+
+    public function courseSubject()
+    {
+        return $this->belongsTo(CourseSubject::class);
+    }
 
     public function user()
     {
