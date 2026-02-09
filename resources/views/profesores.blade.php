@@ -158,27 +158,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Bottom Info Section -->
-                    <div class="mt-8 flex flex-col md:flex-row items-center justify-between gap-6 p-6 bg-blue-50 dark:bg-blue-900/10 rounded-xl border border-blue-100 dark:border-blue-900/30">
-                        <div class="flex gap-4">
-                            <div class="flex-none p-2 bg-blue-100 dark:bg-blue-800 rounded-full text-primary dark:text-blue-200 h-fit">
-                                <span class="material-symbols-outlined">info</span>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-slate-900 dark:text-white">Validación de Horarios con IA</h3>
-                                <p class="text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl">
-                                    La IA requiere al menos 1 asignatura asignada por profesor para generar horarios válidos. 
-                                    Los profesores con 0 asignaturas serán excluidos del proceso de generación.
-                                </p>
-                            </div>
-                        </div>
-                        <a href="{{ url('/grupos') }}"
-                            class="flex-none whitespace-nowrap px-6 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary text-slate-900 dark:text-white font-medium rounded-lg shadow-sm transition-all flex items-center gap-2 group">
-                            Continuar a Grupos
-                            <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        </a>
-                    </div>
                 </div>
             </div>
 

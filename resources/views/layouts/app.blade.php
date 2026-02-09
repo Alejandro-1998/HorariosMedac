@@ -60,18 +60,18 @@
                     <span class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">HorarioIA</span>
                 </a>
                 <!-- Desktop Nav -->
-                <nav class="hidden md:flex items-center gap-8">
-                    <a class="text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-white transition-colors"
+                <nav class="hidden md:flex items-center gap-2">
+                    <a class="px-3 py-2 rounded-md text-sm font-medium transition-colors {{ request()->is('profesores*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800/50 dark:hover:text-white' }}"
                         href="{{ url('/profesores') }}">Profesores</a>
-                    <a class="text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-white transition-colors"
+                    <a class="px-3 py-2 rounded-md text-sm font-medium transition-colors {{ request()->is('grupos*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800/50 dark:hover:text-white' }}"
                         href="{{ url('/grupos') }}">Grupos</a>
-                    <a class="text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-white transition-colors"
+                    <a class="px-3 py-2 rounded-md text-sm font-medium transition-colors {{ request()->is('aulas*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800/50 dark:hover:text-white' }}"
                         href="{{ url('/aulas') }}">Aulas</a>
-                    <a class="text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-white transition-colors"
+                    <a class="px-3 py-2 rounded-md text-sm font-medium transition-colors {{ request()->is('sesiones*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800/50 dark:hover:text-white' }}"
                         href="{{ url('/sesiones') }}">Sesiones</a>
-                    <a class="text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-white transition-colors"
+                    <a class="px-3 py-2 rounded-md text-sm font-medium transition-colors {{ request()->is('horario') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800/50 dark:hover:text-white' }}"
                         href="{{ url('/horario') }}">Horario</a>
-                    <a class="text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-white transition-colors"
+                    <a class="px-3 py-2 rounded-md text-sm font-medium transition-colors {{ request()->is('horario-ia*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800/50 dark:hover:text-white' }}"
                         href="{{ url('/horario-ia') }}">Horario IA</a>
                 </nav>
                 <!-- CTA -->
@@ -90,7 +90,7 @@
         </div>
     </header>
 
-    <main class="flex-grow">
+    <main class="grow">
         @yield('content')
     </main>
 

@@ -11,12 +11,10 @@ Route::get('/sesiones', function () {
 });
 
 use App\Http\Controllers\ProfessorController;
+use App\Http\Controllers\CourseController;
 
 Route::resource('profesores', ProfessorController::class);
-
-Route::get('/grupos', function () {
-    return view('grupos');
-});
+Route::resource('grupos', CourseController::class);
 
 Route::get('/horario', function () {
     return view('horario');
