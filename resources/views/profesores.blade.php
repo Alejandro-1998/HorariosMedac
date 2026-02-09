@@ -41,6 +41,23 @@
             <!-- Content Area -->
             <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
                 <div class="max-w-7xl w-full mx-auto px-6 py-8">
+                    <!-- Alerts -->
+                    @if(session('success'))
+                        <div class="mb-6 p-4 bg-green-100 border border-green-200 text-green-700 rounded-lg">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if($errors->any())
+                        <div class="mb-6 p-4 bg-red-100 border border-red-200 text-red-700 rounded-lg">
+                            <ul class="list-disc list-inside">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <!-- Page Header -->
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                         <div>
@@ -82,33 +99,24 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                                    @php
-                                        $professors = [
-                                            ['name' => 'Javi', 'init' => 'JA', 'type' => 'Tiempo completo', 'subjects' => [['name' => 'Servidor', 'class' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'], ['name' => 'Cliente', 'class' => 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300']], 'sessions' => '16/20', 'percent' => '80%', 'color' => 'bg-green-500', 'avatar_bg' => 'bg-blue-100', 'avatar_text' => 'text-blue-600'],
-                                            ['name' => 'Dani', 'init' => 'DA', 'type' => 'Tiempo completo', 'subjects' => [['name' => 'Despliegue', 'class' => 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'], ['name' => 'Diseño', 'class' => 'bg-rose-100 text-rose-800 dark:bg-rose-900/30 dark:text-rose-300']], 'sessions' => '18/20', 'percent' => '90%', 'color' => 'bg-amber-500', 'avatar_bg' => 'bg-purple-100', 'avatar_text' => 'text-purple-600'],
-                                            ['name' => 'Virginia', 'init' => 'VI', 'type' => 'Tiempo completo', 'subjects' => [['name' => 'Empresas', 'class' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300']], 'sessions' => '10/20', 'percent' => '50%', 'color' => 'bg-green-500', 'avatar_bg' => 'bg-teal-100', 'avatar_text' => 'text-teal-600'],
-                                            ['name' => 'Marisa', 'init' => 'MA', 'type' => 'Tiempo parcial', 'subjects' => [['name' => 'Inglés', 'class' => 'bg-gray-100 text-gray-800 dark:bg-slate-600 dark:text-slate-200']], 'sessions' => '8/20', 'percent' => '40%', 'color' => 'bg-green-500', 'avatar_bg' => 'bg-indigo-100', 'avatar_text' => 'text-indigo-600'],
-                                        ];
-                                    @endphp
-
                                     @foreach ($professors as $prof)
                                         <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors group">
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center gap-3">
-                                                    <div class="h-10 w-10 rounded-full {{ $prof['avatar_bg'] }} flex items-center justify-center {{ $prof['avatar_text'] }} font-bold text-sm">
-                                                        {{ $prof['init'] }}
+                                                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">
+                                                        {{ substr($prof->name, 0, 2) }}
                                                     </div>
                                                     <div>
-                                                        <p class="font-medium text-slate-900 dark:text-white">{{ $prof['name'] }}</p>
-                                                        <p class="text-xs text-slate-500">{{ $prof['type'] }}</p>
+                                                        <p class="font-medium text-slate-900 dark:text-white">{{ $prof->name }}</p>
+                                                        <p class="text-xs text-slate-500">{{ $prof->email }}</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
                                                 <div class="flex flex-wrap gap-2">
-                                                    @foreach ($prof['subjects'] as $subject)
-                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $subject['class'] }}">
-                                                            {{ $subject['name'] }}
+                                                    @foreach ($prof->subjects as $subject)
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                                                            {{ $subject->name }}
                                                         </span>
                                                     @endforeach
                                                 </div>
@@ -116,18 +124,25 @@
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center gap-3">
                                                     <div class="flex-1 h-2 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden max-w-[120px]">
-                                                        <div class="h-full {{ $prof['color'] }} rounded-full" style="width: {{ $prof['percent'] }}"></div>
+                                                        @php
+                                                            $percent = ($prof->subjects->sum('weekly_hours') / $prof->max_weekly_sessions) * 100;
+                                                        @endphp
+                                                        <div class="h-full bg-blue-500 rounded-full" style="width: {{ $percent }}%"></div>
                                                     </div>
-                                                    <span class="text-sm text-slate-600 dark:text-slate-300 font-medium">{{ $prof['sessions'] }}</span>
+                                                    <span class="text-sm text-slate-600 dark:text-slate-300 font-medium">{{ $prof->subjects->sum('weekly_hours') }}/{{ $prof->max_weekly_sessions }}</span>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 text-right">
-                                                <button class="text-slate-400 hover:text-primary transition-colors p-1 rounded-md hover:bg-blue-50 dark:hover:bg-slate-700">
+                                                <button onclick="editProfessor({{ $prof->id }}, '{{ $prof->name }}', '{{ $prof->email }}', '{{ $prof->contract_type }}', {{ $prof->max_weekly_sessions }})" class="text-slate-400 hover:text-primary transition-colors p-1 rounded-md hover:bg-blue-50 dark:hover:bg-slate-700">
                                                     <span class="material-symbols-outlined text-xl">edit</span>
                                                 </button>
-                                                <button class="text-slate-400 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-50 dark:hover:bg-slate-700 ml-1">
-                                                    <span class="material-symbols-outlined text-xl">delete</span>
-                                                </button>
+                                                <form action="{{ route('profesores.destroy', $prof->id) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-slate-400 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-50 dark:hover:bg-slate-700 ml-1">
+                                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -184,65 +199,48 @@
                 </div>
 
                 <!-- Panel Content -->
-                <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
-                    <!-- Avatar Upload -->
-                    <div class="flex flex-col items-center gap-3 py-4">
-                        <div class="h-20 w-20 rounded-full bg-gray-100 dark:bg-slate-800 border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center text-slate-400 cursor-pointer hover:border-primary hover:text-primary transition-colors">
-                            <span class="material-symbols-outlined text-3xl">add_a_photo</span>
-                        </div>
-                        <span class="text-xs font-medium text-primary cursor-pointer">Subir Foto</span>
-                    </div>
-
-                    <!-- Inputs -->
-                    <div class="space-y-4">
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Nombre Completo</label>
-                            <input class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400" placeholder="e.g. John Doe" type="text" />
-                        </div>
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Correo Electrónico</label>
-                            <input class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400" placeholder="profesor@escuela.edu" type="email" />
-                        </div>
-                        
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Asignaturas</label>
-                            <div class="relative group">
-                                <div class="w-full min-h-[50px] px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all flex flex-wrap gap-2 items-center cursor-text">
-                                    <div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-primary dark:text-blue-300 px-2 py-1 rounded text-sm font-medium flex items-center gap-1">
-                                        Geometría
-                                        <button class="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full h-4 w-4 flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-[10px]">close</span>
-                                        </button>
+                <form id="professorForm" action="{{ route('profesores.store') }}" method="POST" class="flex-1 flex flex-col h-full">
+                    @csrf
+                    <div id="methodField"></div>
+                    
+                    <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+                        <!-- Inputs -->
+                        <div class="space-y-4">
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Nombre Completo</label>
+                                <input name="name" id="nameInput" required class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400" placeholder="e.g. John Doe" type="text" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Correo Electrónico</label>
+                                <input name="email" id="emailInput" required class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400" placeholder="profesor@escuela.edu" type="email" />
+                            </div>
+                            
+                            <!-- Subjects (Visual only for now, logic not implemented in controller yet) -->
+                            <div class="space-y-2 opacity-50 pointer-events-none">
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Asignaturas (Gestión en detalle)</label>
+                                <div class="relative group">
+                                    <div class="w-full min-h-[50px] px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all flex flex-wrap gap-2 items-center cursor-text">
+                                        <input class="flex-1 bg-transparent border-none outline-none text-slate-900 dark:text-white placeholder:text-slate-400 min-w-[100px]" placeholder="Opción deshabilitada temp." type="text" disabled />
                                     </div>
-                                    <input class="flex-1 bg-transparent border-none outline-none text-slate-900 dark:text-white placeholder:text-slate-400 min-w-[100px]" placeholder="Escribe para buscar..." type="text" />
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Máximo de Sesiones Semanales</label>
+                                <div class="flex items-center gap-4">
+                                    <input name="max_weekly_sessions" id="sessionsInput" class="w-full h-2 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary" max="40" min="1" type="range" value="20" oninput="document.getElementById('sessionsValue').innerText = this.value" />
+                                    <span id="sessionsValue" class="text-sm font-bold text-slate-900 dark:text-white min-w-8 text-right">20</span>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Tipo de Contrato</label>
-                            <select class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                <option>Tiempo completo</option>
-                                <option>Tiempo parcial</option>
-                                <option>Contratista</option>
-                            </select>
-                        </div>
-                        
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Máximo de Sesiones Semanales</label>
-                            <div class="flex items-center gap-4">
-                                <input class="w-full h-2 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary" max="40" min="1" type="range" value="20" />
-                                <span class="text-sm font-bold text-slate-900 dark:text-white min-w-[2rem] text-right">20</span>
-                            </div>
-                        </div>
                     </div>
-                </div>
 
-                <!-- Panel Footer -->
-                <div class="p-6 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-slate-900 flex gap-3">
-                    <button id="cancelPanelBtn" class="flex-1 px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-300 dark:border-gray-600 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">Cancelar</button>
-                    <button class="flex-1 px-4 py-2.5 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors shadow-md shadow-blue-500/20">Guardar Profesor</button>
-                </div>
+                    <!-- Panel Footer -->
+                    <div class="p-6 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-slate-900 flex gap-3">
+                        <button type="button" id="cancelPanelBtn" class="flex-1 px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-300 dark:border-gray-600 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">Cancelar</button>
+                        <button type="submit" class="flex-1 px-4 py-2.5 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors shadow-md shadow-blue-500/20">Guardar Profesor</button>
+                    </div>
+                </form>
             </div>
         </main>
     </div>
@@ -255,12 +253,20 @@
         const cancelPanelBtn = document.getElementById('cancelPanelBtn');
         const sidePanel = document.getElementById('sidePanel');
         const panelOverlay = document.getElementById('panelOverlay');
+        const form = document.getElementById('professorForm');
+        const methodField = document.getElementById('methodField');
+        const panelTitle = document.querySelector('#sidePanel h3');
 
-        function openPanel() {
+        function openPanel(isEdit = false) {
             panelOverlay.classList.remove('hidden');
+            // Trigger reflow
             void panelOverlay.offsetWidth;
             panelOverlay.classList.remove('opacity-0');
             sidePanel.classList.remove('translate-x-full');
+            
+            if (!isEdit) {
+                resetForm();
+            }
         }
 
         function closePanel() {
@@ -271,7 +277,31 @@
             }, 300);
         }
 
-        addProfessorBtn.addEventListener('click', openPanel);
+        function resetForm() {
+            form.action = "{{ route('profesores.store') }}";
+            methodField.innerHTML = '';
+            document.getElementById('nameInput').value = '';
+            document.getElementById('emailInput').value = '';
+            document.getElementById('contractInput').value = 'Tiempo completo';
+            document.getElementById('sessionsInput').value = 20;
+            document.getElementById('sessionsValue').innerText = 20;
+            panelTitle.innerText = 'Añadir Nuevo Profesor';
+        }
+
+        function editProfessor(id, name, email, contractType, maxSessions) {
+            form.action = "{{ route('profesores.index') }}/" + id;
+            methodField.innerHTML = '<input type="hidden" name="_method" value="PUT">';
+            
+            document.getElementById('nameInput').value = name;
+            document.getElementById('emailInput').value = email;
+            document.getElementById('sessionsInput').value = maxSessions;
+            document.getElementById('sessionsValue').innerText = maxSessions;
+            
+            panelTitle.innerText = 'Editar Profesor';
+            openPanel(true);
+        }
+
+        addProfessorBtn.addEventListener('click', () => openPanel(false));
         closePanelBtn.addEventListener('click', closePanel);
         cancelPanelBtn.addEventListener('click', closePanel);
         panelOverlay.addEventListener('click', closePanel);

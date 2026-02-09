@@ -10,9 +10,9 @@ Route::get('/sesiones', function () {
     return view('sesiones');
 });
 
-Route::get('/profesores', function () {
-    return view('profesores');
-});
+use App\Http\Controllers\ProfessorController;
+
+Route::resource('profesores', ProfessorController::class);
 
 Route::get('/grupos', function () {
     return view('grupos');
