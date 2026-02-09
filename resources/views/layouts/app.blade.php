@@ -65,8 +65,6 @@
                         href="{{ url('/profesores') }}">Profesores</a>
                     <a class="px-3 py-2 rounded-md text-sm font-medium transition-colors {{ request()->is('grupos*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800/50 dark:hover:text-white' }}"
                         href="{{ url('/grupos') }}">Grupos</a>
-                    <a class="px-3 py-2 rounded-md text-sm font-medium transition-colors {{ request()->is('aulas*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800/50 dark:hover:text-white' }}"
-                        href="{{ url('/aulas') }}">Aulas</a>
                     <a class="px-3 py-2 rounded-md text-sm font-medium transition-colors {{ request()->is('sesiones*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800/50 dark:hover:text-white' }}"
                         href="{{ url('/sesiones') }}">Sesiones</a>
                     <a class="px-3 py-2 rounded-md text-sm font-medium transition-colors {{ request()->is('horario') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800/50 dark:hover:text-white' }}"
